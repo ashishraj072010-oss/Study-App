@@ -1,0 +1,47 @@
+modules = ["nodejs-20", "postgresql-16", "python-3.11", "web"]
+run = "npm run dev"
+hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
+
+[nix]
+channel = "stable-24_05"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[env]
+PORT = "5000"
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["node", "./dist/index.cjs"]
+build = ["npm", "run", "build"]
+publicDir = "dist/public"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
+
+[userenv]
+
+[userenv.production]
+
+[userenv.shared]
+GOOGLE_CREDENTIALS = '{   "type": "service_account",   "project_id": "bold-hub-487713-n8",   "private_key_id": "f7a8d5cb36521ed798baa8ab4db3f3f9f2eba15a",   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC+s0sOLvj3iM9N\noLBRHGT7TZgmh3RCf0TKzNrHj/XDCY0jkWHbLiSjHqdxwygG9PemAfW+OGPxSbZ0\n8BebOBH/aOsHYxtNtNfvSo8sarwUQu/o0Pbda5x+oUVh4/7Gy5YPfkTCehI9uEk6\nehB6RkJDfxkg4ZegtApi/wO8RAf+BFfzzwjG5IFPa20SqB1ltjqfnkxQoRv3nB0S\nbzc27tx2QmOLrVJa+aQ6ZWTE7lqspbnvNYDG6L69/Q3pGzHKx27uQZPJmNc2gg4/\nAPDUaNSaKaw64FP2k87E4InfdR5ej5Oin8sd8JDeGxFPPi/5ulPWjl5l2y7o0/YP\n7TkA4+EZAgMBAAECggEAUlfj6E9zFJuf++KPT67Fkde7A6QImPAQectECtjII3v7\n1ChiCzzc+Axz/ATrQznCt41wGb+KtDUCknLblpv69YDNv4ZVU1Pry7kzolfCN7OB\nmVOlzQ066VjktzS2Hgvpk24P7bO9LaZmBFiRxeKRmUiHxrFygiNLutxntgLgOpfR\nrTYXG2HoNE+vP4TxZP6zBag1rnXopZKdwrKBS4S7PRhIHS1VCxe6OtpIvANuGHjI\nnUC7cDZGNiikUD7rWSq9Wbm0pWXu+Tt9vR4HjxfS/vOalNBLONGt3M1p+YRdarQH\n5BYgE2pqtCv8daALq/wo3XH9Y5DJwCYVwzv9sABFmwKBgQDigMo6gg2OqKg8zHTI\n1HcuioIuTvdpRGhycT8s3+J9kdwlCH38DZFnpwfBPtlhbZtXm39D/Afq5ckICOVH\n62L6+5CT2nY/8G5FXaDVVVcNscH7jygHa/NbFpwxGxa1nPwR91CLUwmAv4Xsi1/X\ny75wIkpG5BLsLxknWvMswzcxMwKBgQDXiOd3IAHMySF7vNHljgnZfwcXHJDsaEJJ\ne1uQEYbAtnBbL3hJEXHwxT45a5C9vWSYG4xv0JWoMjm1eOhQA9JO04xxwCuAtwpK\nbbgWM/6J+kxGUBSy4fGUGB3Y4zbIL6mZ/nIr4YzkSMTSUdDYMfdEorQkaUKmuaQH\nhSMS8ut8gwKBgQCX2eI6YXB3YOkRgb0V2yNf52opY7WJNFyVxQimrB5rMvuVNGFK\nN0pxZFDVpK4WHGaV0GD9Eh24xH8HTPdyRQPh4f/msAKxER7MkF3ASGuJec/kN/CN\nMTlAqyLh5RhPf8SawuST04K+dyhxEmuaADVXdhW3+zYYc+b4NIhtTR9WcwKBgQCa\nw+iJBoekV+xeIJiLgDGcZnVd6Bo8VyT6BMUbryoWqSoGoBB8TzWE0O08Z/u38w4P\nlwCBrcI400/S+i2+fu/9wDQB3h6ev1B5X02nS9CDnSI1/vzN8iX41FRiT80fc/IR\n7L5ouf3kUkhaSXtwMni+ZSJ7XsYIWBbre3NTAPGNJwKBgQCYJTvP4FraV+FLK2pz\n31kx3H+ceYuhL27bEZTuolunnZLO7FYsc9wK4o3KWEDdIx1KVvV95s8Jvc0j8NpW\noKmqoCjd2AWX+QN6/qNV5FecwG8YlJNyEgd6xS38LR6cTWZR4skp1rid/I1F+ol2\nXSaqxrz5U1ABMWIVBgHRoWc+MA==\n-----END PRIVATE KEY-----\n",   "client_email": "study-app@bold-hub-487713-n8.iam.gserviceaccount.com",   "client_id": "103522397124705624493",   "auth_uri": "https://accounts.google.com/o/oauth2/auth",   "token_uri": "https://oauth2.googleapis.com/token",   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/study-app%40bold-hub-487713-n8.iam.gserviceaccount.com",   "universe_domain": "googleapis.com" }'
